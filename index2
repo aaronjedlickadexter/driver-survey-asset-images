@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JJ Keller Vehicle Audit</title>
+
+  <style>
+    :root {
+      --r: #b5121b;
+      --i: #111315;
+      --m: #667079;
+      --l: #dce1e4;
+      --s: #f5f6f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--i);
+      font: 14px Arial, sans-serif;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: auto;
+      padding: 0 28px 40px;
+    }
+
+    .bar {
+      height: 80px;
+      border-bottom: 1px solid var(--l);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .red,
+    .req {
+      color: var(--r);
+    }
+
+    .small {
+      color: var(--m);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      padding: 35px 0;
+    }
+
+    .eyebrow {
+      color: var(--r);
+      font-size: 11px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .intro p:last-child {
+      color: var(--m);
+      line-height: 1.5;
+    }
+
+    .sec {
+      border-top: 1px solid var(--l);
+      padding: 30px 0;
+    }
+
+    .head {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .num {
+      color: #89949a;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .head h2 {
+      font-size: 20px;
+      margin: 0 0 6px;
+    }
+
+    .head p {
+      color: var(--m);
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label,
+    legend {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .field input,
+    .field textarea {
+      font: inherit;
+      padding: 13px;
+      border: 1px solid #c9d0d4;
+      border-radius: 3px;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: 2px solid #b5121b33;
+      border-color: var(--r);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .photos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .photo {
+      height: 230px;
+      background: var(--s);
+      border: 1px dashed #aab3b8;
+      border-radius: 4px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo input {
+      display: none;
+    }
+
+    .ph {
+      text-align: center;
+      color: var(--m);
+    }
+
+    .camera {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .cap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 13px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .cap span {
+      color: var(--r);
+      font-size: 12px;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 22px;
+    }
+
+    legend {
+      margin-bottom: 12px;
+    }
+
+    .choice {
+      margin-right: 20px;
+    }
+
+    .choice input {
+      accent-color: var(--r);
+    }
+
+    .submit {
+      border-top: 1px solid var(--l);
+      padding-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .submit p {
+      color: var(--m);
+      font-size: 11px;
+    }
+
+    .btn {
+      background: var(--r);
+      color: #fff;
+      border: 0;
+      border-radius: 3px;
+      padding: 14px 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .done {
+      display: none;
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    .done h1 {
+      font-size: 46px;
+    }
+
+    .done p {
+      color: var(--m);
+    }
+
+    footer {
+      border-top: 1px solid var(--l);
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      color: #89949a;
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        padding: 0 18px 28px;
+      }
+
+      .grid,
+      .photos {
+        grid-template-columns: 1fr;
+      }
+
+      .submit {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <header class="bar">
+      <div class="brand">DEXTER<span class="red">.</span></div>
+      <div class="small">JJ Keller audit · driver survey</div>
+    </header>
+
+    <section class="intro">
+      <div class="eyebrow">Vehicle compliance check</div>
+      <p>
+        Complete the fields below and upload three clear photos showing the
+        vehicle’s DOT number, legal company name, and the complete power unit
+        with its trailer.
+      </p>
+    </section>
+
+    <form id="survey">
+      <section class="sec">
+        <div class="head">
+          <div class="num">01</div>
+          <div>
+            <h2>Your information</h2>
+            <p>Tell us who is completing this update.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Driver name <b class="req">*</b></label>
+          <input
+            id="driverName"
+            required
+            placeholder="First and last name"
+          >
+        </div>
+      </section>
+
+      <section class="sec">
+        <div class="head">
+          <div class="num">02</div>
+          <div>
+            <h2>Vehicle information</h2>
+            <p>These details help us identify the vehicle.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Vehicle assigned location <b class="req">*</b></label>
+            <input
+              id="vehicleLocation"
+              required
+              placeholder="City, state"
+            >
+          </div>
+
+          <div class="field">
+            <label>License plate <b class="req">*</b></label>
+            <input
+              id="licensePlate"
+              required
+              placeholder="e.g. ABC1234"
+            >
+          </div>
+
+          <div class="field">
+            <label>Last four of VIN <b class="req">*</b></label>
+            <input
+              id="vinLastFour"
+              required
+              minlength="4"
+              maxlength="4"
+              inputmode="numeric"
+              placeholder="1234"
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="sec">
+        <div class="head">
+          <div class="num red">03</div>
+          <div>
+            <h2>Required vehicle photos <b class="req">*</b></h2>
+            <p>
+              Show both full sides with the DOT number and legal company name,
+              plus the complete power unit with its trailer attached.
+            </p>
+          </div>
+        </div>
+
+        <div class="photos">
+          <label class="photo">
+            <div class="ph">
+              <div class="camera">▣</div>
+              Tap to take or choose a photo
+            </div>
+
+            <div class="cap">
+              Driver side
+              <span>Add photo</span>
+            </div>
+
+            <input
+              id="driverSidePhoto"
+              required
+              type="file"
+              accept="image/*"
+            >
+          </label>
+
+          <label class="photo">
+            <div class="ph">
+              <div class="camera">▣</div>
+              Tap to take or choose a photo
+            </div>
+
+            <div class="cap">
+              Passenger side
+              <span>Add photo</span>
+            </div>
+
+            <input
+              id="passengerSidePhoto"
+              required
+              type="file"
+              accept="image/*"
+            >
+          </label>
+
+          <label class="photo">
+            <div class="ph">
+              <div class="camera">▣</div>
+              Tap to take or choose a photo
+            </div>
+
+            <div class="cap">
+              Power unit + trailer
+              <span>Add photo</span>
+            </div>
+
+            <input
+              id="trailerPhoto"
+              required
+              type="file"
+              accept="image/*"
+            >
+          </label>
+        </div>
+      </section>
+
+      <section class="sec">
+        <div class="head">
+          <div class="num">04</div>
+          <div>
+            <h2>Almost done</h2>
+            <p>Just two quick questions.</p>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>Do you have a current driver handbook?</legend>
+
+          <label class="choice">
+            <input required type="radio" name="handbook" value="Yes">
+            Yes
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="handbook" value="No">
+            No
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="handbook" value="Not sure">
+            Not sure
+          </label>
+        </fieldset>
+
+        <div class="field">
+          <label>
+            Anything else should we know?
+            <span class="small">Optional</span>
+          </label>
+
+          <textarea
+            id="notes"
+            rows="3"
+            placeholder="Add a note if needed"
+          ></textarea>
+        </div>
+      </section>
+
+      <div class="submit">
+        <p><b class="req">*</b> Required fields</p>
+        <button id="submitButton" class="btn">Submit survey →</button>
+      </div>
+    </form>
+
+    <section id="done" class="done">
+      <div class="red" style="font-size:42px">✓</div>
+      <div class="eyebrow">Survey received</div>
+      <h1>Thank you.</h1>
+      <p>Your vehicle information and photos have been submitted.</p>
+    </section>
+
+    <footer>
+      <b>DEXTER<span class="red">.</span></b>
+      <span>JJ Keller vehicle audit</span>
+    </footer>
+  </main>
+
+  <script>
+    const FLOW_URL =
+      "https://driver-survey-relay.aaron-jedlicka.workers.dev";
+
+    const readPhoto = input =>
+      new Promise((resolve, reject) => {
+        const file = input.files[0];
+
+        if (!file) {
+          return reject(new Error("Please add all three photos."));
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = () =>
+          resolve({
+            fileName: file.name,
+            content: String(reader.result).split(",")[1]
+          });
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+    document.querySelectorAll(".photo input").forEach(input => {
+      input.onchange = event => {
+        const box = event.target.closest(".photo");
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const preview = document.createElement("img");
+        preview.src = URL.createObjectURL(file);
+
+        box.querySelector(".ph").replaceWith(preview);
+        box.querySelector(".cap span").textContent = "Change photo";
+      };
+    });
+
+    document.getElementById("survey").onsubmit = async event => {
+      event.preventDefault();
+
+      const button = document.getElementById("submitButton");
+      button.disabled = true;
+      button.textContent = "Submitting…";
+
+      try {
+        const [
+          driverSidePhoto,
+          passengerSidePhoto,
+          trailerPhoto
+        ] = await Promise.all([
+          readPhoto(document.getElementById("driverSidePhoto")),
+          readPhoto(document.getElementById("passengerSidePhoto")),
+          readPhoto(document.getElementById("trailerPhoto"))
+        ]);
+
+        const payload = {
+          driverName:
+            document.getElementById("driverName").value.trim(),
+
+          vehicleLocation:
+            document.getElementById("vehicleLocation").value.trim(),
+
+          licensePlate:
+            document.getElementById("licensePlate").value.trim(),
+
+          vinLastFour:
+            document.getElementById("vinLastFour").value.trim(),
+
+          handbook:
+            document.querySelector('input[name="handbook"]:checked')
+              ?.value || "",
+
+          notes:
+            document.getElementById("notes").value.trim(),
+
+          driverSidePhoto,
+          passengerSidePhoto,
+          trailerPhoto
+        };
+
+        const response = await fetch(FLOW_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error("Submission failed. Please try again.");
+        }
+
+        event.target.style.display = "none";
+        document.getElementById("done").style.display = "block";
+
+        scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      } catch (error) {
+        alert(error.message);
+        button.disabled = false;
+        button.textContent = "Submit survey →";
+      }
+    };
+  </script>
+</body>
+</html>
